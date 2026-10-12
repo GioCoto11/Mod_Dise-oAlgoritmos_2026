@@ -113,7 +113,7 @@ Las capturas de pantalla van en la subcarpeta `capturas/` de cada sesión
 |   S16   | Formato de un programa en C y compilación    |             |               [ver](UA2/S16/)                |   ⬜   |
 |   S17   | Variables, constantes y entrada/salida       |             |               [ver](UA2/S17/)                |   ⬜   |
 |   S18   | Operadores, casting e if … else              |             |               [ver](UA2/S18/)                |   ⬜   |
-|   S19   | Ciclos y switch                              |             |               [ver](UA2/S19/)                |   ⬜   |
+|   S19   | Ciclos y switch                              |  Aprendí sobre ciclo while y do while y switch           |               [ver](UA2/S19/S19.png)                |   ⬜   |
 |   S20   | Arreglos, matrices y cadenas                 |             |               [ver](UA2/S20/)                |   ⬜   |
 |   S21   | Funciones                                    |             |               [ver](UA2/S21/)                |   ⬜   |
 |   S22   | Paso de parámetros por valor y por dirección |             |               [ver](UA2/S22/)                |   ⬜   |
