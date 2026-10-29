@@ -111,7 +111,7 @@ void resumir(const int cant[], const double tot[], int n, double *total, int *po
     //inicializo los tres resultados en la memoria de main
     *total = 0;
     *posMayor = 0;
-    conDescuento = 0;
+    *conDescuento = 0;
 
     //recorrer las compras
     for (i = 0; i < n; i++){
