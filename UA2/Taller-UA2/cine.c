@@ -2,9 +2,9 @@
 #include <stdio.h>
 //definir constantes
 #define MAX_COMPRAS 10
-#define PRECIO_GENERAL 3500
-#define PRECIO_NINO 2500
-#define PRECIO_MAYOR 2000
+#define PRECIO_GENERAL 3500.0
+#define PRECIO_NINO 2500.0
+#define PRECIO_MAYOR 2000.0
 #define MIN_DECUENTO 5
 #define TAZA_DESCUENTO 0.10
 
@@ -14,7 +14,7 @@ double precioEntrada(int tipo);
 double calcularTotal(int tipo, int cantidad);
 void resumir(const int cant[], const double tot[], int n, double *total, int *posMayor, int *conDescuento);
 
-int main(void){
+int main(void) {
     //definir arreglos y variables
     char clientes[MAX_COMPRAS][15]; //Nombres de los CLIENTES DE LA COMPRA
     int cantidades[MAX_COMPRAS]; //Cantidad de compras posibles 10
@@ -26,7 +26,7 @@ int main(void){
     //resultados resumen
     int posMayor, conDescuento;
 
-//Portada
+//Titulo y lista de tipos
 printf("===== Venta de Entradas =====\n");
 printf("Tipos: 1. General 3500, 2. Nino 2500, 3. Adulto mayor 2000\n");
 
@@ -35,13 +35,13 @@ n = leerEntero("Cantidad de compras", 1, MAX_COMPRAS);
 
 //FOR para una vuelta por compra
 for (i = 0; i < n; i++) {
-printf("Compras %d\n Cliente: ", i + 1);//numero de compra y pedido de cliente
+printf("Compra %d\n Cliente: ", i + 1);//numero de compra y pedido de cliente
 scanf("%14s", clientes[i]);
 
 //leer el tipo de entrada
-tipo = leerEntero(" Tipo", 1, 3); //valida sin usar un do-while
+tipo = leerEntero("  Tipo", 1, 3); //valida sin usar un do-while. Dos espacios
 //leer cantidad de entradas
-cantidades[i] = leerEntero(" Entradas", 1, 8); //valida sin usar un do-while
+cantidades[i] = leerEntero("  Entradas", 1, 8); //valida sin usar un do-while Dos espacios
 
 //calcular el total de la compra
 totales[i] = calcularTotal(tipo, cantidades[i]);
@@ -52,21 +52,21 @@ resumir(cantidades, totales, n, &totalVendido, &posMayor, &conDescuento);
 
 //encabezado de al tabla
 
-printf("\n%-12s%9d%12.2f\n", clientes[i], cantidades[i], totales[i]);
+printf("\n%-12s%9s%12.2s\n", "Cliente", "Entradas", "Total"); //revisar formato
 //recorrer las compras
-for (i = 0; i < n; i++) {
+for (i = 0; i < n; i++) 
 //mostrar fila
 printf("%-12s%9d%12.2f\n", clientes[i], cantidades[i], totales[i]);
 //total vendido
-printf("Total vendido:   %12.2f\n", totalVendido);
+printf("Total vendido:      %12.2f\n", totalVendido);
 //compra mayor
-printf("Compra Mayor:  %s (%.2f)\n", clientes[posMayor], totales[posMayor]);
+printf("Compra Mayor:       %s (%.2f)\n", clientes[posMayor], totales[posMayor]);
 //Compras con descuento
 printf("Con descuento:     %d compra(s)\n", conDescuento);
 //termina main con el return por valor
 return 0;
-}
-}
+    
+ }
 
 //Definiciones. Leer entero
 int leerEntero(const char mensaje[], int minimo, int maximo){
@@ -95,7 +95,7 @@ double precioEntrada(int tipo){
     }
 }
 
-//dEFINICION DE CALCULAR TOTAL
+//DEFINICION DE CALCULAR TOTAL
 double calcularTotal(int tipo, int cantidad) {
     double total = precioEntrada(tipo) * cantidad;
 
