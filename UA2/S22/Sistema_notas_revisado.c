@@ -1,29 +1,7 @@
 //Caso integrador de la unidad 2 del curso Diseño de Algoritmos
 //Enunciado: El sistema registra notas de un grupo de 16 estudiantes
 //contiene un menú 1. Agregar (nota de 0 100 validarla). 2. Ver notas (cada una con aprobado si es 70 o más, o reprobado), 3. Estadisticas (Promedio, mayor y menos). y 0 para salir
-//
-//>>> ============================== REVISION ==============================
-//>>> Los comentarios que empiezan con //>>> marcan los errores encontrados.
-//>>> Cada uno dice: QUE se observaba, POR QUE pasaba y la CORRECCION aplicada.
-//>>> Resumen:
-//>>>   ERROR 1 (linea del printf de mostrarNotas): %5.lf muestra 0 decimales:
-//>>>           65.5 se veia como 66 y 69.5 como 70 "Reprobado". La nota SI se
-//>>>           guardaba (el menor salia 65.5), pero parecia no aceptarse.
-//>>>   ERROR 2 (leerNota): 105 SI se rechazaba, pero sin ningun mensaje; el
-//>>>           usuario creia que se habia aceptado, digitaba la siguiente opcion
-//>>>           del menu (por ejemplo 2) y ese 2 se guardaba como nota.
-//>>>   ERROR 3 (leerNota y menu): si se digita una coma (65,5) o una letra,
-//>>>           scanf falla, el texto queda en el teclado y el menu se repite sin
-//>>>           fin (ciclo infinito).
-//>>>   ERROR 4 (printf de estadisticas): %0.f muestra el promedio sin decimales
-//>>>           y "Proemdio" esta mal escrito.
-//>>>   ERROR 5 (calcularEstadisticas): *mayor no se iniciaba (valor basura).
-//>>>   ERROR 6 (calcularEstadisticas): el menor nunca se comparaba: siempre
-//>>>           salia la primera nota (con 50 y 40 decia Menor: 50).
-//>>> Prueba despues de corregir: 65.5, 105 (rechazada con mensaje) y 100, 69.5
-//>>>   -> 65.5 Reprobado, 100.0 Aprobado, 69.5 Reprobado;
-//>>>   promedio 78.33, mayor 100.0, menor 65.5.
-//>>> ======================================================================
+
 #include <stdio.h>
 #define MAX 16
 
@@ -40,8 +18,6 @@ void mostrarNotas(const double notas[], int cantidad);
 //Calcula estadisticas: recibe el erreglo y cantidad, y tres punteros
 void calcularEstadisticas(const double notas[], int cantidad, double *promedio, double *mayor, double *menor);
 
-//>>> NUEVO (para el ERROR 3): descarta lo que quedo escrito en el teclado
-//>>>   hasta el Enter. Se usa cuando scanf no pudo leer un numero.
 void limpiarEntrada(void);
 
 int main(void){
@@ -60,13 +36,13 @@ int main(void){
         //Pedir la opcion del menu
         printf("Opcion: ");
         //Leer opcion
-        //>>> ERROR 3 (menu): antes era  scanf("%d", &opcion);  sin revisar si
-        //>>>   leyo algo. Con una letra (o la ",5" que sobraba de 65,5) scanf
-        //>>>   devuelve 0, opcion conserva su valor anterior y el texto sigue en
-        //>>>   el teclado: el menu se repetia sin fin.
-        //>>> CORRECCION: scanf devuelve cuantos datos leyo; si no es 1, se
-        //>>>   limpia el teclado y se pone una opcion invalida (-1) para que
-        //>>>   el switch muestre "Opcion invalida".
+        //ERROR (menu): antes era  scanf("%d", &opcion);  sin revisar si
+        //   leyo algo. Con una letra (o la ",5" que sobraba de 65,5) scanf
+        //   devuelve 0, opcion conserva su valor anterior y el texto sigue en
+        //   el teclado: el menu se repetia sin fin.
+        // CORRECCION: scanf devuelve cuantos datos leyo; si no es 1, se
+        //   limpia el teclado y se pone una opcion invalida (-1) para que
+        //   el switch muestre "Opcion invalida".
         if (scanf("%d", &opcion) != 1) {
             limpiarEntrada();
             opcion = -1;
@@ -93,10 +69,10 @@ int main(void){
                 //hacer la llamada que devuela 3 resultados.
                 calcularEstadisticas(notas, cantidad, &promedio, &mayor, &menor);
                 //mostrar resultados
-                //>>> ERROR 4: antes era  printf("Proemdio: %0.f ...")
-                //>>>   %0.f significa ancho 0 y precision 0 (CERO decimales):
-                //>>>   78.33 se mostraba como 78. Ademas "Proemdio" estaba mal escrito.
-                //>>> CORRECCION: %.2f muestra 2 decimales y se corrige el texto.
+                //ERROR: antes era  printf("Proemdio: %0.f ...")
+                //   %0.f significa ancho 0 y precision 0 (CERO decimales):
+                //   78.33 se mostraba como 78. Ademas "Proemdio" estaba mal escrito.
+                // CORRECCION: %.2f muestra 2 decimales y se corrige el texto.
                 printf("Promedio: %.2f Mayor: %.1f Menor: %.1f\n", promedio, mayor, menor);
             }
             break;
@@ -107,7 +83,7 @@ int main(void){
 
             //Cualquier otra opcion que no sea del menu
             default:
-            //>>> Observacion: decia "Opcion invalidad" (error de escritura).
+            //Observacion: decia "Opcion invalidad" (error de escritura).
             printf("Opcion invalida\n");
         }
         //Repita mientas no se elija 0
@@ -125,23 +101,23 @@ double leerNota(void){
         //pedir nota
         printf("Nota (0 a 100): ");
         //leer nota
-        //>>> ERROR 3 (nota): antes era  scanf("%lf", &nota);  sin revisar.
-        //>>>   En C el decimal se escribe con PUNTO. Con 65,5 scanf lee 65 y
-        //>>>   deja ",5" en el teclado; con una letra no lee nada y nota queda
-        //>>>   con basura. El texto sobrante dañaba las lecturas siguientes.
-        //>>> CORRECCION: si scanf no devuelve 1, o si despues del numero no
-        //>>>   viene el Enter (caso 65,5: sigue la coma), se avisa, se limpia
-        //>>>   el teclado y se pone nota = -1 para que el do-while la pida otra
-        //>>>   vez. Asi 65,5 no se guarda en silencio como 65.
+        // ERROR  (nota): antes era  scanf("%lf", &nota);  sin revisar.
+        //   En C el decimal se escribe con PUNTO. Con 65,5 scanf lee 65 y
+        //   deja ",5" en el teclado; con una letra no lee nada y nota queda
+        //   con basura. El texto sobrante dañaba las lecturas siguientes.
+        // CORRECCION: si scanf no devuelve 1, o si despues del numero no
+        //   viene el Enter (caso 65,5: sigue la coma), se avisa, se limpia
+        //   el teclado y se pone nota = -1 para que el do-while la pida otra
+        //   vez. Asi 65,5 no se guarda en silencio como 65.
         if (scanf("%lf", &nota) != 1 || getchar() != '\n') {
             printf("  Digite un numero; use punto decimal (ejemplo 65.5)\n");
             limpiarEntrada();
             nota = -1;
-        //>>> ERROR 2: el rango SI se validaba bien (nota < 0 || nota > 100),
-        //>>>   pero sin mensaje: con 105 solo volvia a salir "Nota (0 a 100):"
-        //>>>   y parecia que la habia aceptado. El usuario digitaba entonces la
-        //>>>   opcion del menu (por ejemplo 2) y ese 2 quedaba guardado como nota.
-        //>>> CORRECCION: avisar que la nota esta fuera de rango.
+        // ERROR: el rango SI se validaba bien (nota < 0 || nota > 100),
+        //   pero sin mensaje: con 105 solo volvia a salir "Nota (0 a 100):"
+        //   y parecia que la habia aceptado. El usuario digitaba entonces la
+        //   opcion del menu (por ejemplo 2) y ese 2 quedaba guardado como nota.
+        // CORRECCION: avisar que la nota esta fuera de rango.
         } else if (nota < 0 || nota > 100) {
             printf("  Nota fuera de rango: debe estar entre 0 y 100\n");
         }
@@ -171,12 +147,12 @@ void mostrarNotas(const double notas[], int cantidad){
     //for para recorrer las notas
     for (i = 0; i < cantidad; i++){
         //mostrar nuemro, nota y condicion
-        //>>> ERROR 1: antes era  printf("%2d. %5.lf %s\n", ...)
-        //>>>   En "%5.lf" el punto sin numero significa precision 0: la nota se
-        //>>>   muestra REDONDEADA sin decimales. 65.5 se veia como 66 y 69.5
-        //>>>   como 70 con "Reprobado" (porque el valor real 69.5 es < 70).
-        //>>>   La nota si estaba guardada bien; el problema era solo al mostrarla.
-        //>>> CORRECCION: %5.1f muestra 1 decimal (65.5, 69.5, 100.0).
+        // ERROR: antes era  printf("%2d. %5.lf %s\n", ...)
+        //   En "%5.lf" el punto sin numero significa precision 0: la nota se
+        //   muestra REDONDEADA sin decimales. 65.5 se veia como 66 y 69.5
+        //   como 70 con "Reprobado" (porque el valor real 69.5 es < 70).
+        //   La nota si estaba guardada bien; el problema era solo al mostrarla.
+        // CORRECCION: %5.1f muestra 1 decimal (65.5, 69.5, 100.0).
         printf("%2d. %5.1f %s\n", i + 1, notas[i], notas[i] >= 70 ? "Aprobado" : "Reprobado");
     }
 }
@@ -188,10 +164,10 @@ void calcularEstadisticas(const double notas[], int cantidad, double *promedio, 
     //indice local para recorrer el erreglo
     int i;
     //se supone que la primera nota es mayor
-    //>>> ERROR 5: antes solo estaba  *menor = notas[0];  y *mayor NUNCA se
-    //>>>   iniciaba: la primera comparacion (notas[i] > *mayor) se hacia contra
-    //>>>   un valor basura de main. A veces funciona y a veces no.
-    //>>> CORRECCION: el mayor Y el menor empiezan con la primera nota.
+    // ERROR: antes solo estaba  *menor = notas[0];  y *mayor NUNCA se
+    //   iniciaba: la primera comparacion (notas[i] > *mayor) se hacia contra
+    //   un valor basura de main. A veces funciona y a veces no.
+    // CORRECCION: el mayor Y el menor empiezan con la primera nota.
     *mayor = notas[0];
     *menor = notas[0];
     //for para recorrer las notas
@@ -203,9 +179,9 @@ void calcularEstadisticas(const double notas[], int cantidad, double *promedio, 
             //guarde el nuevo mayor
             *mayor = notas[i];
         }
-        //>>> ERROR 6: faltaba comparar con el menor. Por eso el menor siempre
-        //>>>   era la primera nota (con 50 y 40 mostraba Menor: 50).
-        //>>> CORRECCION: igual que el mayor, pero con <.
+        // ERROR 6: faltaba comparar con el menor. Por eso el menor siempre
+        //   era la primera nota (con 50 y 40 mostraba Menor: 50).
+        // CORRECCION: igual que el mayor, pero con <.
         if (notas[i] < *menor){
             //guarde el nuevo menor
             *menor = notas[i];
@@ -215,9 +191,9 @@ void calcularEstadisticas(const double notas[], int cantidad, double *promedio, 
     *promedio = suma / cantidad;
 }
 
-//>>> NUEVO: definicion de limpiarEntrada (usada en la correccion del ERROR 3).
-//>>>   getchar lee un caracter a la vez; el ciclo descarta todo lo que quedo
-//>>>   escrito hasta el Enter ('\n') o hasta el fin de la entrada (EOF).
+// NUEVO: definicion de limpiarEntrada.
+//   getchar lee un caracter a la vez; el ciclo descarta todo lo que quedo
+//   escrito hasta el Enter ('\n') o hasta el fin de la entrada (EOF).
 void limpiarEntrada(void){
     //caracter leido; es int porque EOF no cabe en un char
     int c;
