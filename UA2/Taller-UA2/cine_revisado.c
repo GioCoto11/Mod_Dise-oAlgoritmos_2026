@@ -5,8 +5,8 @@
 #define PRECIO_GENERAL 3500.0
 #define PRECIO_NINO 2500.0
 #define PRECIO_MAYOR 2000.0
-//>>> OBSERVACION: el nombre MIN_DECUENTO esta mal escrito (DESCUENTO) y TAZA_DESCUENTO deberia ser TASA_DESCUENTO.
-//>>> No es un error de calculo: como se escribe igual en todas partes, funciona. Es solo de redaccion.
+//OBSERVACION 1: el nombre MIN_DECUENTO esta mal escrito (DESCUENTO) y TAZA_DESCUENTO deberia ser TASA_DESCUENTO.
+//No es un error de calculo: como se escribe igual en todas partes, funciona. Es solo de redaccion.
 #define MIN_DECUENTO 5
 #define TAZA_DESCUENTO 0.10
 
@@ -18,7 +18,7 @@ void resumir(const int cant[], const double tot[], int n, double *total, int *po
 
 int main(void) {
     //definir arreglos y variables
-//OBSERVACION 1: 15 caracteres = 14 letras + el '\0'. Un nombre mas largo no cabe (ver ERROR 2 en la linea del scanf).
+//OBSERVACION 2: 15 caracteres = 14 letras + el '\0'. Un nombre mas largo no cabe (ver ERROR 2 en la linea del scanf).
     char clientes[MAX_COMPRAS][15]; //Nombres de los CLIENTES DE LA COMPRA
     int cantidades[MAX_COMPRAS]; //Cantidad de compras posibles 10
     double totales[MAX_COMPRAS]; //total de cada compra
@@ -58,25 +58,33 @@ resumir(cantidades, totales, n, &totalVendido, &posMayor, &conDescuento);
 
 //encabezado de al tabla
 
-//ERROR 2: el formato %12.2s corta el texto a 2 letras y muestra 'To' en vez de 'Total'. Debe ser %12s.
-//Correccion:  printf("\n%-12s%9s%12s\n", "Cliente", "Entradas", "Total");
+//ERROR 2 (YA CORREGIDO en la linea de abajo): el formato %12.2s cortaba el texto a 2 letras y mostraba 'To' en vez de 'Total'. Ahora es %12s.
 printf("\n%-12s%9s%12s\n", "Cliente", "Entradas", "Total");
 //recorrer las compras
-//OBSERVACION 2: este for no lleva llaves; solo repite el printf de la linea 59. Funciona, pero conviene poner { } para evitar errores al agregar lineas.
-for (i = 0; i < n; i++) { 
-//mostrar fila
+//ERROR 3 la llave { de este for se cerraba
+//   ANTES del "}" final de main, despues del return 0. Asi, el resumen y el
+//   return 0 quedaban DENTRO del ciclo: en la primera vuelta (i = 0) imprimia
+//   la fila de Ana, luego el resumen, y el return 0 terminaba el programa.
+//   La segunda vuelta (i = 1, Luis) nunca se ejecutaba.
+// CORRECCION: la llave } del for se cierra justo despues del printf de la fila.
+//   Dentro del for solo va lo que se repite (una fila por compra); el resumen
+//   y el return 0 van FUERA, una sola vez.
+// Leccion: el error no lo detecta el compilador (no da advertencia); se descubre
+//   probando con datos conocidos y comparando con el resultado esperado.
+for (i = 0; i < n; i++) {
+//mostrar fila (lo UNICO que se repite: una fila por compra)
 printf("%-12s%9d%12.2f\n", clientes[i], cantidades[i], totales[i]);
+}   //AQUI se cierra el for (antes estaba despues del return 0)
+
 //total vendido
 printf("Total vendido:      %12.2f\n", totalVendido);
 //compra mayor
 printf("Compra Mayor:       %s (%.2f)\n", clientes[posMayor], totales[posMayor]);
 //Compras con descuento
 printf("Con descuento:     %d compra(s)\n", conDescuento);
-//termina main con el return por valor
+//termina main con el return por valor (FUERA del for)
 return 0;
-    }
-    
- }
+}   //cierre de main
 
 //Definiciones. Leer entero
 int leerEntero(const char mensaje[], int minimo, int maximo){
