@@ -18,7 +18,7 @@ void resumir(const int cant[], const double tot[], int n, double *total, int *po
 
 int main(void) {
     //definir arreglos y variables
-//>>> OBSERVACION: 15 caracteres = 14 letras + el '\0'. Un nombre mas largo no cabe (ver ERROR 2 en la linea del scanf).
+//OBSERVACION 1: 15 caracteres = 14 letras + el '\0'. Un nombre mas largo no cabe (ver ERROR 2 en la linea del scanf).
     char clientes[MAX_COMPRAS][15]; //Nombres de los CLIENTES DE LA COMPRA
     int cantidades[MAX_COMPRAS]; //Cantidad de compras posibles 10
     double totales[MAX_COMPRAS]; //total de cada compra
@@ -39,16 +39,15 @@ n = leerEntero("Cantidad de compras", 1, MAX_COMPRAS);
 //FOR para una vuelta por compra
 for (i = 0; i < n; i++) {
 printf("Compra %d\n Cliente: ", i + 1);//numero de compra y pedido de cliente
-//>>> ERROR 2: scanf("%14s") solo toma 14 letras; las que sobran se quedan en el teclado y la siguiente lectura (el %d de leerEntero) las intenta leer como numero.
-//>>> Con un nombre de mas de 14 letras, Tipo y Entradas no se piden bien y la compra sale con datos equivocados (y por eso puede perder el descuento).
-//>>> Arreglo: limpiar el resto de la linea despues del scanf, con:  int c; while ((c = getchar()) != '\n' && c != EOF);
+//ERROR 1: scanf("%14s") solo toma 14 letras; las que sobran se quedan en el teclado y la siguiente lectura (el %d de leerEntero) las intenta leer como numero.
+//Con un nombre de mas de 14 letras, Tipo y Entradas no se piden bien y la compra sale con datos equivocados (y por eso puede perder el descuento).
+//Correccion: limpiar el resto de la linea despues del scanf, con:  int c; while ((c = getchar()) != '\n' && c != EOF);
 scanf("%14s", clientes[i]);
 int c; while ((c = getchar()) != '\n' && c != EOF);
 //leer el tipo de entrada
-//>>> OBSERVACION: el comentario de la derecha dice 'sin usar un do-while' pero leerEntero SI usa do-while. Corregir el comentario.
-tipo = leerEntero(" Tipo", 1, 3); //valida sin usar un do-while.espacio de formato
+tipo = leerEntero(" Tipo", 1, 3); //valida 
 //leer cantidad de entradas
-cantidades[i] = leerEntero(" Entradas", 1, 8); //valida sin usar un do-while.espacio de formato
+cantidades[i] = leerEntero(" Entradas", 1, 8); //valida 
 
 //calcular el total de la compra
 totales[i] = calcularTotal(tipo, cantidades[i]);
@@ -59,11 +58,11 @@ resumir(cantidades, totales, n, &totalVendido, &posMayor, &conDescuento);
 
 //encabezado de al tabla
 
-//>>> ERROR 1: el formato %12.2s corta el texto a 2 letras y muestra 'To' en vez de 'Total'. Debe ser %12s.
-//>>> Correcto:  printf("\n%-12s%9s%12s\n", "Cliente", "Entradas", "Total");
-printf("\n%-12s%9s%12s\n", "Cliente", "Entradas", "Total"); //revisar formato
+//ERROR 2: el formato %12.2s corta el texto a 2 letras y muestra 'To' en vez de 'Total'. Debe ser %12s.
+//Correccion:  printf("\n%-12s%9s%12s\n", "Cliente", "Entradas", "Total");
+printf("\n%-12s%9s%12s\n", "Cliente", "Entradas", "Total");
 //recorrer las compras
-//>>> OBSERVACION: este for no lleva llaves; solo repite el printf de la linea 59. Funciona, pero conviene poner { } para evitar errores al agregar lineas.
+//OBSERVACION 2: este for no lleva llaves; solo repite el printf de la linea 59. Funciona, pero conviene poner { } para evitar errores al agregar lineas.
 for (i = 0; i < n; i++) { 
 //mostrar fila
 printf("%-12s%9d%12.2f\n", clientes[i], cantidades[i], totales[i]);
@@ -111,8 +110,7 @@ double precioEntrada(int tipo){
 }
 
 //DEFINICION DE CALCULAR TOTAL
-//>>> NOTA SOBRE EL DESCUENTO: esta funcion SI aplica el 10% cuando cantidad >= 5 (probado: 5 entradas generales = 17500 -> 15750.00).
-//>>> Si el descuento 'no se aplica', revise (a) que recompilo y ejecuta el .exe nuevo, (b) que el nombre tenga 14 letras o menos y sin espacios (ERROR 2), (c) que escribe numeros en Tipo y Entradas (ERROR 3).
+
 double calcularTotal(int tipo, int cantidad) {
     double total = precioEntrada(tipo) * cantidad;
 

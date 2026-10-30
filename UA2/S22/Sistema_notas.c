@@ -56,7 +56,7 @@ int main(void){
                 //hacer la llamada que devuela 3 resultados.
                 calcularEstadisticas(notas, cantidad, &promedio, &mayor, &menor);
                 //mostrar resultados
-                printf("Proemdio: %0.f Mayor: %.1f Menor: %.1f\n", promedio, mayor, menor);
+                printf("Proemdio: %0.f Mayor: %.1f Menor: %.1f\n", promedio, mayor, menor); //ver
             }
             break;
             //opcion cero para salir
