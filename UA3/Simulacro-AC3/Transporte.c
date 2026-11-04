@@ -1,22 +1,5 @@
 /*Un colegio controla los pases de bus de sus estudiantes y puede registrar hasta 5 pases. De cada pase se guarda: el código (100 a 999, no se repite), el nombre del estudiante (una sola palabra, hasta 19 letras), los viajes disponibles y si el pase está activo o dado de baja. El programa inicia con 3 pases ya cargados (tabla de abajo). Debe mostrar un menú que se repite hasta elegir 0; toda opción o dato fuera de rango se vuelve a pedir.*/
 
-//>>> ============================== REVISION ==============================
-//>>> Los comentarios que empiezan con //>>> marcan los errores encontrados:
-//>>>   QUE se observaba, POR QUE pasaba y la CORRECCION aplicada.
-//>>>   ERROR 1 (linea de la definicion de buscarCodigo): el nombre estaba
-//>>>           escrito "bucarCodigo" (sin la s). Error del ENLAZADOR (ld):
-//>>>           "referencia a 'buscarCodigo' sin definir". No genera el .exe.
-//>>>   ERROR 2 (case 1, Incluir): la llave del if "no hay espacio" se
-//>>>           cerraba despues de leer el codigo; esas lineas quedaban
-//>>>           DESPUES del break y nunca se ejecutaban. Error LOGICO: nunca
-//>>>           pedia el codigo, no revisaba repetidos y el pase se guardaba
-//>>>           con un codigo basura. Ademas faltaba el aviso de repetido.
-//>>>   Observacion 1: "esxiste" mal escrito en el aviso de codigo.
-//>>>   Observacion 2: el encabezado "Viajes disponibles" no cabe en %6s y
-//>>>           la tabla sale desalineada.
-//>>> Prueba despues de corregir: el caso de prueba completo da los 8
-//>>>   resultados esperados del enunciado.
-//>>> ======================================================================
 
 /*Pases cargados al iniciar:
 Código	Nombre	Viajes
