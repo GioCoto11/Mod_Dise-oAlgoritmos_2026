@@ -3,7 +3,7 @@
 void ordenar(int *a, int *b) {
     int temp;
     if (*a > *b) {
-        temp = a;
+        temp = *a;
         *a = *b;
         *b = temp;
     }
@@ -15,7 +15,8 @@ int main(void) {
     scanf("%d", &x);
     printf("Segundo numero: ");
     scanf("%d", &y);
-    ordenar(x, y);
+    ordenar(&x, &y);
     printf("Menor: %d  Mayor: %d\n", x, y);
     return 0;
 }
+
