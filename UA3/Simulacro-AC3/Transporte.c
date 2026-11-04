@@ -1,5 +1,23 @@
 /*Un colegio controla los pases de bus de sus estudiantes y puede registrar hasta 5 pases. De cada pase se guarda: el código (100 a 999, no se repite), el nombre del estudiante (una sola palabra, hasta 19 letras), los viajes disponibles y si el pase está activo o dado de baja. El programa inicia con 3 pases ya cargados (tabla de abajo). Debe mostrar un menú que se repite hasta elegir 0; toda opción o dato fuera de rango se vuelve a pedir.*/
 
+//>>> ============================== REVISION ==============================
+//>>> Los comentarios que empiezan con //>>> marcan los errores encontrados:
+//>>>   QUE se observaba, POR QUE pasaba y la CORRECCION aplicada.
+//>>>   ERROR 1 (linea de la definicion de buscarCodigo): el nombre estaba
+//>>>           escrito "bucarCodigo" (sin la s). Error del ENLAZADOR (ld):
+//>>>           "referencia a 'buscarCodigo' sin definir". No genera el .exe.
+//>>>   ERROR 2 (case 1, Incluir): la llave del if "no hay espacio" se
+//>>>           cerraba despues de leer el codigo; esas lineas quedaban
+//>>>           DESPUES del break y nunca se ejecutaban. Error LOGICO: nunca
+//>>>           pedia el codigo, no revisaba repetidos y el pase se guardaba
+//>>>           con un codigo basura. Ademas faltaba el aviso de repetido.
+//>>>   Observacion 1: "esxiste" mal escrito en el aviso de codigo.
+//>>>   Observacion 2: el encabezado "Viajes disponibles" no cabe en %6s y
+//>>>           la tabla sale desalineada.
+//>>> Prueba despues de corregir: el caso de prueba completo da los 8
+//>>>   resultados esperados del enunciado.
+//>>> ======================================================================
+
 /*Pases cargados al iniciar:
 Código	Nombre	Viajes
 201	    Ana	    5
@@ -52,23 +70,27 @@ int main(void) {
             //revisa si existe
             if (pos == -1) {
                 //aviso
-                printf("No esxiste un pase activo con el codigo %d\n", codigo);
+                //>>> Observacion 1: decia "No esxiste" (error de escritura).
+                printf("No existe un pase activo con el codigo %d\n", codigo);
                 //para continuar
                 continue;
             }
         }
         switch (opcion) {
             case 1:
-            //revisa si no hay espacio
             if (n == MAX_PASES) {
                 printf("No hay espacio para mas pases\n");
                 break;//sale para volver a lmenu
-           
+            }   // AQUI se cierra el if (antes estaba despues del repetido)
+
             //lee codigo com oentero
             codigo = leerEntero("Codigo", COD_MIN, COD_MAX);
             //revisar si el codigo existe
-            if (buscarCodigo(cod, activo, n, codigo) != -1)
-            break;  //sale para no incluir al repetido      
+            if (buscarCodigo(cod, activo, n, codigo) != -1) {
+                //>>> faltaba el aviso: sin el, el usuario no sabe por que no
+                //>>>   se incluyo el pase.
+                printf("El codigo %d ya existe\n", codigo);
+                break;  //sale para no incluir al repetido
             }
         //pide nombre
         printf("Nombre (una palabra): ");
@@ -128,7 +150,8 @@ int main(void) {
  }
 
  //Busqueda secuencial de un pase
- int bucarCodigo(const int cod[], const int activo[], int n, int codigo){
+
+ int buscarCodigo(const int cod[], const int activo[], int n, int codigo){
     int i;
     for (i = 0; i < n; i++)
     //ignora pase dados de baja
@@ -158,12 +181,13 @@ int main(void) {
     int i, activos = 0;
 
     //encabezado de la tabla
-    printf("%-6s %-12s %6s\n", "Codigo", "Nombre", "Viajes disponibles");
+    //  no cabe y la tabla se desalinea. Se usa %18s aqui y en la fila.
+    printf("%-6s %-12s %18s\n", "Codigo", "Nombre", "Viajes disponibles");
     //recorrer los espacios usados
     for (i = 0; i < n; i++){
         //solo activos
         if (activo[i] == 1){
-            printf("%-6d %-12s %6d\n", cod[i], nom [i], viajes[i]);
+            printf("%-6d %-12s %18d\n", cod[i], nom [i], viajes[i]);
             //cuenta pases
             activos++;
         }
