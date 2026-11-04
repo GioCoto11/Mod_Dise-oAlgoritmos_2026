@@ -287,7 +287,7 @@ void consultar(const int cod[], const char nom[][TAM_NOMBRE],
     int i, activos = 0;
     // QUE: encabezado de la tabla. COMO: anchos fijos.
     // PARA QUE: columnas alineadas.
-    printf("%-6s %-12s %6s\n", "Codigo", "Nombre", "Viajes");
+    printf("%-6s %-12s %6s\n", "Codigo", "Nombre", "Viajes Disponibles");
     // QUE: recorre los espacios usados. COMO: for.
     // PARA QUE: revisar cada pase.
     for (i = 0; i < n; i++) {
